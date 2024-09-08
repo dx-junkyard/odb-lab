@@ -5,6 +5,9 @@ import { exec, execFile } from "child_process";
 import isDev from "electron-is-dev";
 import { fileURLToPath } from "url";
 
+// GPUハードウェアアクセラレーションを無効にする
+app.disableHardwareAcceleration();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -37,9 +40,19 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 
+  let backendBinary;
+
+  switch (process.platform) {
+    case "win32":
+      backendBinary = "server.exe";
+    default:
+      backendBinary = "server";
+  }
+
   const backend = path.join(
     isDev ? process.cwd() : process.resourcesPath,
-    "backend/dist/server"
+    "backend/dist",
+    backendBinary
   );
 
   execFile(
@@ -66,6 +79,21 @@ app.whenReady().then(() => {
 // explicitly with Cmd + Q.
 app.on("window-all-closed", function () {
   if (process.platform !== "darwin") app.quit();
+
+  // windowsの場合は、backendのプロセスをkillする
+  if (process.platform === "win32") {
+    exec("taskkill /IM server.exe /F", (err, stdout, stderr) => {
+      if (err) {
+        log.error(err);
+      }
+      if (stdout) {
+        log.error(stdout);
+      }
+      if (stderr) {
+        log.error(stderr);
+      }
+    });
+  }
 
   // macの場合は、backendのプロセスをkillする
   if (process.platform === "darwin") {

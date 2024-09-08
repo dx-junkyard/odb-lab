@@ -1,5 +1,21 @@
 # electron-quick-start
 
+## build
+```sh
+# build backend
+$ cd backend
+$ poetry install
+$ poetry run pyinstaller server.spec
+$ cd ../
+
+# build app
+$ npm install
+## for windows
+$ npm run electron-build-win
+## for mac
+$ npm run electron-build-mac
+```
+
 **Clone and run for a quick way to see Electron in action.**
 
 This is a minimal Electron application based on the [Quick Start Guide](https://electronjs.org/docs/latest/tutorial/quick-start) within the Electron documentation.

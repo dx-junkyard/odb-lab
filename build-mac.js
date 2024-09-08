@@ -14,7 +14,7 @@ builder
       productName: "React Based Electron",
       copyright: "Copyright © 2023 MKSC",
       directories: {
-        output: "electron-build/mac",  // macOS向けのビルド出力ディレクトリ
+        output: "electron-build/win",  // macOS向けのビルド出力ディレクトリ
       },
       files: [
         "build/**/*",

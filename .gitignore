@@ -7,3 +7,6 @@ backend/build
 
 # MacOS spec
 .DS_Store
+
+# electron
+electron-build

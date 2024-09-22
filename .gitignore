@@ -1,12 +1,10 @@
 node_modules
+dist
+out
+.DS_Store
+*.log*
 
 # backend
 __pycache__
 backend/dist
 backend/build
-
-# MacOS spec
-.DS_Store
-
-# electron
-electron-build

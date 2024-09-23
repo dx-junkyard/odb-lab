@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -37,6 +37,8 @@ function createWindow(): void {
   }
 }
 
+let child
+
 function startBackend(): void {
   let backendBinary: string
 
@@ -54,7 +56,7 @@ function startBackend(): void {
     backendBinary
   )
 
-  execFile(
+  child = execFile(
     backend,
     {
       windowsHide: true
@@ -81,9 +83,6 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
-
   createWindow()
 
   app.on('activate', function () {
@@ -93,6 +92,11 @@ app.whenReady().then(() => {
   })
 
   startBackend()
+})
+
+// kill all child process before-quit
+app.on('before-quit', function () {
+  child.kill('SIGINT')
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

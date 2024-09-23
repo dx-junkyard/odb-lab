@@ -7,5 +7,11 @@
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[makefile]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": false,
+    "editor.renderWhitespace": "all",
+    "editor.tabSize": 2,
   }
 }

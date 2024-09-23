@@ -1,2 +1,5 @@
 dev:
-	poetry run uvicorn server:app --reload --port 5000
+	poetry run uvicorn server:app --reload --port 58912
+
+build:
+	poetry run pyinstaller server.spec

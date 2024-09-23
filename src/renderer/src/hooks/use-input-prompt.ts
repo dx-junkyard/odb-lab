@@ -37,7 +37,7 @@ export const postPrompt = async (
     }
   ])
 
-  const response = await fetch('/api/chat', {
+  const response = await fetch('http://0.0.0.0:58912/api/interpreter/chat', {
     method: 'POST',
     body
   })
@@ -68,11 +68,11 @@ export const postPrompt = async (
       try {
         const json = JSON.parse(jsonString)
 
-        if (json.message || json.code) {
-          return json.message || json.code
-        } else if (json['end_of_code']) {
+        if (json.content) {
+          return json.content
+        } else if (json['end'] && json['type'] === 'code') {
           return '\n```\n'
-        } else if (json['start_of_code']) {
+        } else if (json['start'] && json['type'] === 'code') {
           return '\n```python\n'
         } else if (json['file_id']) {
           fileId = json['file_id']

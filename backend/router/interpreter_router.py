@@ -1,8 +1,10 @@
 from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Form
+from fastapi.responses import StreamingResponse
 from config.logging import logger
 from service.interpreter_service import chat_interpreter, set_interpreter_api_key
+
 
 router = APIRouter(prefix="/api/interpreter")
 
@@ -21,11 +23,10 @@ def set_api_key(
 def chat(
     message: Annotated[str, Form()],
 ):
-
-    chat_response = chat_interpreter(message)
-
     try:
-        return {"message": chat_response}
+        return StreamingResponse(
+            chat_interpreter(message), media_type="text/event-stream"
+        )
     except Exception as e:
-        logger.error(f"Error in chat_endpoint: {e}")
+        logger.error(e)
         raise HTTPException(status_code=500)

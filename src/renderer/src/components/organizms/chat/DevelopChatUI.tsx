@@ -22,7 +22,7 @@ export const DevelopChatUI: FC = () => {
         <ChatMessages chatMessages={messages} />
       </div>
 
-      <div className="fixed w-[80vw] z-50 bottom-0 right-0 items-end text-black bg-white border-t flex justify-center">
+      <div className="fixed w-[80vw] z-50 bottom-0 right-0 items-end text-black bg-white border-t-2 flex justify-center">
         <div className="w-full md:w-[768px] mx-3">
           <ChatInput
             addFile={addFile}

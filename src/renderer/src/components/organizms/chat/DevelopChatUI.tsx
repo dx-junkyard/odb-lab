@@ -17,12 +17,12 @@ export const DevelopChatUI: FC = () => {
   } = useInputPrompt('', '')
 
   return (
-    <div className="relative flex h-full flex-col items-center mb-[200px]">
+    <div className="relative w-full flex h-full flex-col items-center mb-[200px]">
       <div className="flex h-full w-full flex-col">
         <ChatMessages chatMessages={messages} />
       </div>
 
-      <div className="fixed z-50 bottom-0 items-end w-[99vw] text-black bg-white border-t flex justify-center">
+      <div className="fixed w-[80vw] z-50 bottom-0 right-0 items-end text-black bg-white border-t flex justify-center">
         <div className="w-full md:w-[768px] mx-3">
           <ChatInput
             addFile={addFile}

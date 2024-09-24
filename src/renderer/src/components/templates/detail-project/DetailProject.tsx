@@ -1,42 +1,37 @@
-'use client';
-import React from 'react';
-import { Project } from '@renderer/types/project';
-import { ProjectCard } from '@renderer/components/molecules/project/project-card/ProjectCard';
-import { ActionCard } from '@renderer/components/atoms/ui-parts/action-card/ActionCard';
-import { ProjectTags } from '@renderer/components/molecules/project/project-tags/ProjectTags';
-import DatasetLinkCardList from '@renderer/components/molecules/project/dataset-link-card-list/DatasetLinkCardList';
-import { CsvFile } from '@renderer/types/csv-file';
-import TableView from '@renderer/components/atoms/ui-parts/table/TableView';
-import DownloadButton from '@renderer/components/atoms/ui-parts/download-button/DownloadButton';
-import fetchAsset from '@renderer/service/fetch-asset';
-import { parse } from 'csv-parse/sync';
-import useSWRImmutable from 'swr/immutable';
+'use client'
+import React from 'react'
+import { Project } from '@renderer/types/project'
+import { ProjectCard } from '@renderer/components/molecules/project/project-card/ProjectCard'
+import { ActionCard } from '@renderer/components/atoms/ui-parts/action-card/ActionCard'
+import { ProjectTags } from '@renderer/components/molecules/project/project-tags/ProjectTags'
+import DatasetLinkCardList from '@renderer/components/molecules/project/dataset-link-card-list/DatasetLinkCardList'
+import { CsvFile } from '@renderer/types/csv-file'
+import TableView from '@renderer/components/atoms/ui-parts/table/TableView'
+import DownloadButton from '@renderer/components/atoms/ui-parts/download-button/DownloadButton'
+import fetchAsset from '@renderer/service/fetch-asset'
+import { parse } from 'csv-parse/sync'
+import useSWRImmutable from 'swr/immutable'
 
 interface DetailProjectProps {
-  project: Project;
-  isLogin: boolean;
+  project: Project
+  isLogin: boolean
 }
 
 const fetchCsvFile = async (project: Project): Promise<CsvFile> => {
-  const csvString = await fetchAsset(
-    `/api/project/${project.id}/formatted-files`
-  );
-  const csvData = parse(await csvString.text(), { columns: true });
+  const csvString = await fetchAsset(`/api/project/${project.id}/formatted-files`)
+  const csvData = parse(await csvString.text(), { columns: true })
   return {
     name: project.formattedFiles[0].name,
     content: csvData,
-    raw: csvString,
-  };
-};
+    raw: csvString
+  }
+}
 
-export const DetailProject = ({
-  project,
-  isLogin = false,
-}: DetailProjectProps) => {
+export const DetailProject = ({ project, isLogin = false }: DetailProjectProps) => {
   const { data } = useSWRImmutable(
     [`/api/project/${project.id}/formattedFiles`, project],
     ([_, project]) => fetchCsvFile(project)
-  );
+  )
 
   return (
     <article className="w-full flex flex-col justify-center items-center">
@@ -54,13 +49,9 @@ export const DetailProject = ({
 
       {data && (
         <div className="w-full bg-white text-black px-[10px] py-[50px] flex flex-col space-y-2">
-          <h2 className="text-xl">
-            整形済みデータ(自治体標準データセットに準ずる)
-          </h2>
+          <h2 className="text-xl">整形済みデータ(自治体標準データセットに準ずる)</h2>
           <div className="grid grid-cols-10">
-            <span className="text-left col-span-8">
-              ※最大5行までプレビュー表示されます
-            </span>
+            <span className="text-left col-span-8">※最大5行までプレビュー表示されます</span>
             <div className="flex items-center justify-end col-span-2">
               <DownloadButton filename={data.name} value={data.raw} />
             </div>
@@ -72,7 +63,7 @@ export const DetailProject = ({
       )}
 
       {isLogin && (
-        <div className="w-[99vw] text-black bg-blue-100 flex items-center justify-center">
+        <div className=" text-black bg-blue-100 flex items-center justify-center">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-24 px-[10px] py-[50px] max-w-[1000px]">
             <ActionCard
               title="データ整形レシピの実行"
@@ -92,5 +83,5 @@ export const DetailProject = ({
         </div>
       )}
     </article>
-  );
-};
+  )
+}

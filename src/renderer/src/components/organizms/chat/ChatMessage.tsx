@@ -17,9 +17,7 @@ interface MessageProps {
 
 export const ChatMessage: FC<MessageProps> = ({ message, isLoading }) => {
   return (
-    <div
-      className={cn('flex w-[99vw] justify-center', message.role === 'user' ? '' : 'bg-gray-50')}
-    >
+    <div className={cn('flex w-full justify-center', message.role === 'user' ? '' : 'bg-gray-50')}>
       <div className="relative flex flex-col py-6 w-full md:w-[768px]">
         <div className="space-y-3 mx-3">
           <div className="flex items-center space-x-3">
